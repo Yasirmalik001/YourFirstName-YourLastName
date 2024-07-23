@@ -231,40 +231,47 @@ flex-direction: column;
     {% endif %}
   </div> 
   <script>
-  console.log({{ all_products[product] | json }});
-    
-   function variantChanges() {
-  document.querySelectorAll('.product-option_{{ product.id }}-{{ block.id }} input[type="radio"]').forEach(radio => {
-    radio.addEventListener('change', handleVariantChange);
-  });
-}
-
-function handleVariantChange() {
-  const selectedOptions = [];
-  const product = {{ all_products[product] | json }};
-
-  document.querySelectorAll('.product-option_{{ product.id }}-{{ block.id }} input[type="radio"]:checked').forEach(radio => {
-    selectedOptions.push(radio.value);
-  });
- console.log("Selected options:", selectedOptions);
-  if (product.variants && product.variants.length > 0) {
-    const matchedVariant = product.variants.find(variant => {
-      return selectedOptions.every((option, index) => option === variant.options[index]);
-    });
-
-    if (matchedVariant) {
-      console.log("Matched variant:", matchedVariant);
-      document.querySelector("#product_{{ product.id }}-{{ block.id }}").value = matchedVariant.id;
-    } 
-  } else {
-    console.log("Product or variants not properly defined");
-  }
-}
-
-// Initialize variant changes
-variantChanges();
-    
+    console.log("Product data:", {{ all_products[product] | json }});
+  
+    function variantChanges() {
+      document.querySelectorAll('.product-option_{{ product.id }}-{{ block.id }} input[type="radio"]').forEach(radio => {
+        radio.addEventListener('change', handleVariantChange);
+      });
+    }
+  
+    function handleVariantChange() {
+      const selectedOptions = [];
+      const product = {{ all_products[product] | json }};
+      
+      document.querySelectorAll('.product-option_{{ product.id }}-{{ block.id }} input[type="radio"]:checked').forEach(radio => {
+        selectedOptions.push(radio.value);
+      });
+  
+    console.log("selected-option: ", selectedOptions);
+  
+      if (product.variants && product.variants.length > 0) {
+  
+  
+        const matchedVariant = product.variants.find(variant => {
+          console.log("Comparing with variant options:", variant.options);
+          return selectedOptions.every((option, index) => option === variant.options[index]);
+        });
+  
+        if (matchedVariant) {
+        
+          document.querySelector("#product_{{ product.id }}-{{ block.id }}").value = matchedVariant.id;
+        } else {
+          console.log("No matching variant found");
+        }
+      } else {
+        console.log("Product or variants not properly defined");
+      }
+    }
+  
+    // Initialize variant changes
+    variantChanges();
   </script>
+  
   {% endfor %}
 </div> 
 
