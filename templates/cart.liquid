@@ -1,0 +1,78 @@
+<style>
+.cart-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px 10px;
+  position: relative;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: auto / span 2; 
+  padding: 10px;
+}
+
+.cart-item-details {
+  display: grid;
+}
+
+.cart-item-details h2, .cart-item-details p {
+  margin: 5px 0;
+}
+
+.remove-item {
+  padding: 10px 10px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: #000;
+}
+
+.remove-item a {
+    font-size: 20px;
+}
+.cart-drawer-empty{
+  place-content: center;
+  font-size: 30px;
+  display: grid;
+}
+</style>
+
+
+{% if cart.item_count == 0 %}
+  <p class="cart-drawer-empty">Your cart is empty</p>
+{% else %}
+  <div class="cart-items">
+    {% for item in cart.items %}
+      <div class="cart-item">
+        <div class="cart-item-image">
+          <img src="{{ item.image | img_url: '350x' }}" alt="{{ item.title }}" />
+        </div>
+        <div class="cart-item-details">
+          <h2>{{ item.title }}</h2>
+          <p>{{ item.product.description }}</p>
+          <table class="cart-item-variants">
+            <tr>
+              <td>{{ item.variant.title }}</td>
+            </tr>
+          </table>
+          <div class="cart-drawer-item-main-flex-right">
+            <span>{{ item.price | money }}</span>
+          </div>
+         <div class="remove-item">
+  <a href="{{ item.url_to_remove }}" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; height: 100%; text-decoration: none; color: white;">
+    remove product
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+    </svg>
+  </a>
+</div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}

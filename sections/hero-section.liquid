@@ -1,0 +1,263 @@
+<style>
+ .c-hamburger {
+  position: relative;
+  overflow: hidden;
+  margin: 10px;
+  padding: 0;
+  width: 30px;
+  height: 36px;
+  z-index: 999;
+  font-size: 0;
+  text-indent: -9999px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: transparent;
+  box-shadow: none;
+  border-radius: none;
+  border: none;
+  cursor: pointer;
+  -webkit-transition: background 0.3s;
+  transition: background 0.3s;
+  &:focus {
+    outline: none;
+  }
+  span {
+    display: block;
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #000;
+    &:before,
+    &:after {
+      position: absolute;
+      display: block;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: #000;
+      content: "";
+    }
+    &:before {
+      top: -10px;
+    }
+    &:after {
+      bottom: -10px;
+    }
+  }
+}
+
+.c-hamburger--htx {
+  span {
+    -webkit-transition: background 0s 0.3s;
+    transition: background 0s 0.3s;
+    &:before,
+    &:after {
+      -webkit-transition-duration: 0.3s, 0.3s;
+      transition-duration: 0.3s, 0.3s;
+      -webkit-transition-delay: 0.3s, 0s;
+      transition-delay: 0.3s, 0s;
+    }
+    &:before {
+      -webkit-transition-property: top, -webkit-transform;
+      transition-property: top, transform;
+    }
+    &:after {
+      -webkit-transition-property: bottom, -webkit-transform;
+      transition-property: bottom, transform;
+    }
+  }
+  &.is-active {
+    span {
+      background: none;
+
+      &:before,
+      &:after {
+        -webkit-transition-delay: 0s, 0.3s;
+        transition-delay: 0s, 0.3s;
+      }
+
+      &:before {
+        top: 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+      }
+      &:after {
+        bottom: 0;
+        -webkit-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+      }
+    }
+  }
+}
+.shop-now-button:hover .arrow-svg {
+  animation: slide 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(-8px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(8px);
+    opacity: 1;
+  }
+}
+body:has(.mobileNav){
+    overflow: hidden;
+}
+.nav-wrapper {
+  gap: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+    flex: 2;
+}
+.logo h1{
+        font-size: 4rem;
+        font-weight: 500;
+    }
+.guide h1{
+    font-size: 4rem;
+    font-weight: 500;
+
+}
+.nav-wrapper {
+    flex: 4;
+}
+@media screen and (max-width: 990px) {
+    .hamburger {
+    display: block;
+  }
+    .nav-wrapper {
+        opacity: 0;
+        position: absolute;
+        top: -100%;
+        left: 0;
+        width: 100%;
+        transition: top 0.7s ease, opacity 0.7s ease;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .nav-wrapper.mobileNav {
+    opacity: 1;
+    top: 72px;
+    background-color: whitesmoke;
+    padding: 10px 0 20px 0;
+    z-index: 99;
+    }
+    .logo h1{
+        text-align: center;
+        font-size: 4rem;
+    }
+    .guide p{
+        text-align: center;
+    }
+}
+@media screen and (max-width: 768px) {
+  .logo h1 {
+    font-size: 3rem;
+}
+    .guide-button{
+        position: absolute;
+        bottom: 20px;
+    }
+}
+</style>
+
+<div class="hero-section-main">
+    <header>
+        <div class="hamburger">
+            <button class="c-hamburger  c-hamburger--htx">
+                <span>toogle menu</span>
+            </button>
+        </div>
+        <div class="header  flex  container">
+           <div class="logo">
+            <h1>TISSU VISON</h1>
+           </div>
+           <div class="nav-wrapper">
+               <div class="logo-heading">
+                   <P>Find the ideal gift for your loved ones.
+                    choose gift</P>
+               </div>
+                    {%  render 'shop-now' %}
+           </div>
+        </div>
+    </header>
+    <section>
+        <div class="hero-section">
+      <div class="left-section">
+        <div class="hero-image">
+            <img src="https://cdn.shopify.com/s/files/1/0652/2532/6747/files/Frame-2.png?v=1721566638"alt="hero image">
+        </div>
+      </div>
+      <div class="right-section flex">
+          <div class="guide-section container flex">
+              <div class="guide  flex">
+                  <h1>{{ section.settings.hero-text }}</h1>
+                  <p>{{ section.settings.hero-paragraph }}</p>
+                  <div class="guide-button">
+                      {% render 'shop-button' %}
+                  </div>
+              </div>
+          </div>
+        <div class="hero-image-2">
+            <img src="https://cdn.shopify.com/s/files/1/0652/2532/6747/files/Frame.png?v=1721566646" alt="hero-image-2">
+        </div>
+      </div>
+        </div>
+    </section>
+<div class="paragraph">
+    <p>SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL</p>
+</div>
+</div>
+
+
+{%  schema  %}
+
+
+
+{
+    "name": "hero-section",
+    "settings": [
+        {
+            "type": "text",
+            "id": "header-button",
+            "label": "header-button",
+            "default": "CHOOSE GIFT"
+        },
+        {
+            "type": "text",
+            "id": "shop-now-button",
+            "label": "shop-now-button",
+            "default": "SHOP NOW"
+        },{
+            "type": "text",
+            "id": "shop-button",
+            "label": "shop-button",
+            "default": "ADD TO CART"
+        },
+        {
+            "type": "text",
+            "id": "hero-text",
+            "label": "hero-text",
+            "default": "The Guide Gift"
+        },{
+            "type": "text",
+            "id": "hero-paragraph",
+            "label": "hero-paragraph",
+            "default": "Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season."
+        }
+    ]
+}
+  {% endschema %} 

@@ -1,0 +1,334 @@
+<style>
+.store-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+header {
+  padding: 10px;
+  background-color: var(--bg-primary-color);
+  position: relative;
+}
+
+.header-btn {
+  padding: 12px 30px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  background-color: yellow;
+  gap: 10px;
+}
+.header-btn:hover .arrow-svg {
+  animation: slide-in-left 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes slide-in-left {
+  0% {
+    transform: translateX(-8px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(8px);
+    opacity: 1;
+  }
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.logo h1 {
+  font-size: 2.5rem;
+  font-weight: 500;
+}
+.hero-section-bg {
+  height: 70vh;
+  width: 100%;
+}
+
+.hero-btn {
+  padding: 15px 30px;
+  border: 1px solid rgba(0, 0, 0, 0.47);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  background-color: black;
+  gap: 10px;
+  width: 250px;
+  justify-content: center;
+  gap: 20px;
+}
+.hero-btn:hover .arrow-svg {
+  animation: slide-in-left 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.hero-section-bg img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.gift-guide {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.left-guide-section {
+  flex-basis: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 20px;
+}
+.left-guide-section h1 {
+  font-weight: 500;
+  font-size: 3rem;
+}
+.left-guide-section p {
+  line-height: 1.7;
+}
+.right-guide-section {
+  flex-basis: 50%;
+}
+.right-guide-section img {
+  width: 100%;
+  height: 100%;
+}
+
+.arrow-svg {
+  fill: white;
+}
+
+.paragraph {
+  background-color: #f5f5f5;
+  padding: 5px 0;
+}
+.paragraph p {
+  text-align: center;
+}
+
+.c-hamburger {
+  display: none;
+  position: relative;
+  overflow: hidden;
+  margin: 10px;
+  padding: 0;
+  width: 30px;
+  height: 36px;
+  z-index: 999;
+  font-size: 0;
+  text-indent: -9999px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: transparent;
+  box-shadow: none;
+  border-radius: none;
+  border: none;
+  cursor: pointer;
+  -webkit-transition: background 0.3s;
+  transition: background 0.3s;
+}
+.c-hamburger:focus {
+  outline: none;
+}
+.c-hamburger span {
+  display: block;
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #000;
+}
+.c-hamburger span:before,
+.c-hamburger span:after {
+  position: absolute;
+  display: block;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: #000;
+  content: "";
+}
+.c-hamburger span:before {
+  top: -10px;
+}
+.c-hamburger span:after {
+  bottom: -10px;
+}
+
+.c-hamburger--htx span {
+  -webkit-transition: background 0s 0.3s;
+  transition: background 0s 0.3s;
+}
+.c-hamburger--htx span:before,
+.c-hamburger--htx span:after {
+  -webkit-transition-duration: 0.3s, 0.3s;
+  transition-duration: 0.3s, 0.3s;
+  -webkit-transition-delay: 0.3s, 0s;
+  transition-delay: 0.3s, 0s;
+}
+.c-hamburger--htx span:before {
+  -webkit-transition-property: top, -webkit-transform;
+  transition-property: top, transform;
+}
+.c-hamburger--htx span:after {
+  -webkit-transition-property: bottom, -webkit-transform;
+  transition-property: bottom, transform;
+}
+.c-hamburger--htx.is-active span {
+  background: none;
+}
+.c-hamburger--htx.is-active span:before,
+.c-hamburger--htx.is-active span:after {
+  -webkit-transition-delay: 0s, 0.3s;
+  transition-delay: 0s, 0.3s;
+}
+.c-hamburger--htx.is-active span:before {
+  top: 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.c-hamburger--htx.is-active span:after {
+  bottom: 0;
+  -webkit-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+.hamburger-logo {
+  position: absolute;
+  top: 7px;
+  left: 10px;
+}
+
+.nav-wrapper {
+  gap: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  flex: 2;
+}
+.nav-wrapper {
+  flex: 3;
+}
+@media screen and (max-width: 768px) {
+  .hero-btn {
+    position: absolute;
+    left: 50%;
+    bottom: 20%;
+    transform: translate(-50%, 20%);
+  }
+  .hero-section-bg {
+    height: 50svh;
+    width: 100%;
+  }
+  .nav-wrapper {
+    gap: 10px;
+  }
+  .nav-wrapper {
+    opacity: 0;
+    position: absolute;
+    top: -100px;
+    left: 0;
+    width: 100%;
+    transition: top 0.3s ease, opacity 0.5s ease;
+    flex-direction: column;
+  }
+  .header-text {
+    text-align: center;
+    padding: 10px 0;
+  }
+  .nav-wrapper.mobileNav {
+    opacity: 1;
+    top: 78px;
+    background-color: whitesmoke;
+    padding: 10px 0 20px 0;
+  }
+  .c-hamburger {
+    display: block;
+  }
+  .logo {
+    text-align: center;
+  }
+  .store-header {
+    display: block;
+  }
+
+  .gift-guide {
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .left-guide-section {
+    align-items: center;
+    padding: 30px;
+  }
+
+  .left-guide-section p {
+    text-align: center;
+  }
+
+  .right-guide-section {
+    display: none;
+  }
+
+  .hero-section {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}
+</style>
+
+
+<header>
+  <div class="hamburger-logo">
+    <button class="c-hamburger c-hamburger--htx">
+    <span>toggle menu</span>
+    </button>
+  </div>
+  <div class="store-header container">
+    <div class="logo">
+  <h1>{{ section.settings.logo-text }}</h1>
+    </div>
+    <div class="nav-wrapper">
+      <div class="header-text">
+        <span>{{ section.settings.header-text }}</span>
+      </div>
+    {%  render 'button' %} 
+    </div>
+    </div>
+</header>
+
+{% schema %}
+  {
+      "name": "button",
+      "settings": [
+          {
+              "type": "text",
+              "id": "text-button",
+              "label": "header-button",
+              "default": "CHOOSE GIFT"
+          },
+          {
+              "type": "text",
+              "id": "logo-text",
+              "label": "header-Text",
+              "default": "TISSO VISON"
+          },
+
+          {
+              "type": "text",
+              "id": "header-text",
+              "label": "header-Text",
+              "default": "Find the ideal gift for your loved ones."
+          }
+          ]
+  }
+  {% endschema %}

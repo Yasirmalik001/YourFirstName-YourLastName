@@ -1,0 +1,457 @@
+<style>
+.product-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+gap: 20px;
+padding: 40px 10px;
+position: relative;
+}
+.product-image img {
+max-width: 100%;
+height: auto;
+}
+.product-image-container {
+display: none !important;
+width: 370px;
+max-height: 450px;
+z-index: 99999;
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+background: #f5f5f5;
+}
+ @media screen and (max-width: 768px){
+  .product-image-container{
+    top: 10%
+  }
+}
+.cart-drawer-item-main-flex-right h1{
+font-size: 16px;
+}
+.cart-drawer-item-main-flex-right {
+display: flex;
+flex-direction: column;
+gap: 8px;
+align-items: start;
+
+justify-content: center;
+}
+
+.product-image-container.product-image-container--active {
+display: block !important;
+}
+
+.option-colors {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 0.5px solid #000000;
+}
+.option-colors  .span-option {
+flex: 1;
+border-left-width: 5px !important;
+border: 0.5px solid #000000;
+
+}
+
+    
+.header-button {
+cursor: pointer;
+margin: 30px 0;
+padding: 10px 0;
+}
+.header-btn {
+padding: 10px 30px;
+border-radius: 2px;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 40px;
+}
+
+.choose-sizes {
+border-left: 2px solid black;
+
+}
+label {
+    width: 100%;
+    display: block;
+    padding: 7px;
+    text-transform: capitalize;
+}
+input[type="radio"]:checked + label {
+  background-color: black;
+  color: white;
+}
+input[type="submit"] {
+    font-size: 20px;
+    border: none;
+    background-color: #000;
+    color: #fff;
+    outline: none;
+  height: 45px;
+  text-transform: uppercase;
+}
+input[type="radio"]{
+  display: none;
+}
+.header-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    position: relative;
+}
+input.add-to-cart {
+    position: absolute;
+    inset: 0;
+}
+select.select-option {
+padding: 10px;
+border: none;
+outline: none;
+background: #f5f5f5;
+}
+.option-values {
+border: 1px solid black;
+outline: none;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 0 10px;
+}
+.option-sizes, .options{
+display: flex;
+flex-direction: column;
+}
+.validation{
+  color: red;
+}
+</style>
+
+<div class="product-grid container">
+  {% for block in section.blocks %}
+  {% assign product = block.settings.product_id %}
+  <div class="product-grid-item" data-product-id="{{ product.id }}">
+
+    {% if block.type == 'product' %}
+      {% assign custom_image = block.settings.product_images %}
+      {% if custom_image %}
+        <div class="product-image" id="image-container__{{ section.id }}-{{ block.id }}">
+          <img src="{{ custom_image | img_url: 'master' }}" alt="Custom Image" />
+        </div>
+        <div class="product-image-container" data-product-id="{{ product.id }}" id="container__{{ section.id }}-{{ block.id }}">
+          <div class="product-inner">
+            <div class="close close-btn" id="close_btn__{{ section.id }}-{{ block.id }}">
+              {% render 'close' %}
+            </div>
+            <div class="cart-drawer-item-images">
+              <div class="cart-drawer-item-image">
+                {% if product.featured_image != blank %}
+                  <img src="{{ product.featured_image | img_url: 'master' }}" alt="{{ product.title }}">
+                {% else %}
+                  <img src="{{ product.images[0] | img_url: '200x' }}" alt="{{ product.title }}">
+                {% endif %}
+              </div>
+              <div class="cart-drawer-title">
+                <div class="cart-drawer-item-main-flex-right">
+                  <h1>{{ product.title }}</h1>
+                  <span>{{ product.price | money }}</span>
+                  {{ product.description }}
+                </div>
+              </div>
+            </div>
+
+            {% form 'product', product,  id: prodId %}
+              <input id="product_{{ product.id }}-{{ block.id }}" type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+              {% if product.variants.size > 1 %}
+                <div class="product-option_{{ product.id }}-{{ block.id }}">
+                  <div class="product-options" id="product-option_{{ product.id }}">
+                  {% for option in product.options_with_values %}
+                    {% if option.name == "color" %}
+                      <div class="options" id="option-btns__{{ section.id }}-{{ block.id }}">
+                        <span>{{ option.name }}:</span>
+                        <div class="option-colors">
+                          {% for value in option.values %}
+                      <div class="span-option">
+                      <input {% if option.selected_value == value %}  {% endif %} type="radio" name="{{ option.name }}" value="{{ value }}" id="{{ option.name | handle }}-{{ value | handle }}-{{ product.id | handle }}" >
+                      <label {% unless product.variants[forloop.index0].available %} disabled="disabled" {% endunless %} for="{{ option.name | handle }}-{{ value | handle }}-{{ product.id | handle }}" {% if option.available %} text {% endif %}> 
+                        {{ value }}
+                      </label>
+                      </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                {% endif %}
+                <div class="product-options" id="product-option_{{ product.id }}-{{ block.id }}">
+                {% for option in product.options_with_values %}
+                  {% if option.name == "sizes" %}
+                    <div class="option-sizes">
+                      <span>{{ option.name }}:</span>
+                    </div>
+                      <div class="custom-select">
+                        <div class="select-header">
+                          <span>choose your sizes</span>
+                          
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"  width="26px"  height="26px" class="bi-arrow-right"><path d="M11.9999 13.1714L16.9497 8.22168L18.3639 9.63589L11.9999 15.9999L5.63599 9.63589L7.0502 8.22168L11.9999 13.1714Z"></path></svg>
+                        </div>
+                        <div class="options-container">
+                          {% for value in option.values %}
+                            <div class="option">
+                            <input {% if option.selected_value == value %}  {% endif %} type="radio" name="{{ option.name }}" value="{{ value }}" id="{{ option.name | handle }}-{{ value | handle }}-{{ product.id | handle }}" >
+                            <label {% unless product.variants[forloop.index0].available %} disabled="disabled" {% endunless %} for="{{ option.name | handle }}-{{ value | handle }}-{{ product.id | handle }}" {% if option.available %} text {% endif %}> 
+                              {{ value }}
+                            </label>
+                          </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+              </div>
+              <div class="header-button">
+                <input type="submit" value="add to cart" class="add-to-cart" {% unless product.selected_or_first_available_variant.available %} disabled {% endunless %}/>
+                <div class="arrow-svg">
+                  <svg width="30" viewBox="0 0 69 30" fill="#fff" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M2.75879 13.1458L0.758789 13.1458L0.758789 17.1458L2.75879 17.1458L2.75879 13.1458ZM68.173 16.56C68.9541 15.779 68.9541 14.5127 68.173 13.7316L55.4451 1.00368C54.664 0.222633 53.3977 0.222633 52.6167 1.00368C51.8356 1.78473 51.8356 3.05106 52.6167 3.83211L63.9304 15.1458L52.6167 26.4595C51.8356 27.2406 51.8356 28.5069 52.6167 29.288C53.3977 30.069 54.664 30.069 55.4451 29.288L68.173 16.56ZM2.75879 17.1458L66.7588 17.1458L66.7588 13.1458L2.75879 13.1458L2.75879 17.1458Z" fill="#fff"/>
+                  </svg>
+                  </div>
+                  </div>
+                {% endform %}
+                </div> 
+                </div> 
+      {% else %}
+        <p>No custom image provided</p>
+      {% endif %}
+    {% endif %}
+  </div> 
+  <script>
+  console.log({{ all_products[product] | json }});
+    
+   function variantChanges() {
+  document.querySelectorAll('.product-option_{{ product.id }}-{{ block.id }} input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', handleVariantChange);
+  });
+}
+
+function handleVariantChange() {
+  const selectedOptions = [];
+  const product = {{ all_products[product] | json }};
+
+  document.querySelectorAll('.product-option_{{ product.id }}-{{ block.id }} input[type="radio"]:checked').forEach(radio => {
+    selectedOptions.push(radio.value);
+  });
+ console.log("Selected options:", selectedOptions);
+  if (product.variants && product.variants.length > 0) {
+    const matchedVariant = product.variants.find(variant => {
+      return selectedOptions.every((option, index) => option === variant.options[index]);
+    });
+
+    if (matchedVariant) {
+      console.log("Matched variant:", matchedVariant);
+      document.querySelector("#product_{{ product.id }}-{{ block.id }}").value = matchedVariant.id;
+    } 
+  } else {
+    console.log("Product or variants not properly defined");
+  }
+}
+
+// Initialize variant changes
+variantChanges();
+    
+  </script>
+  {% endfor %}
+</div> 
+
+<script>
+  
+document.querySelectorAll('.close-btn').forEach((btn) => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.product-image-container').forEach((con) => {
+        con.classList.remove('product-image-container--active');
+      });
+    });
+  });
+
+  document.querySelectorAll('[id^="image-container__"]').forEach(function(imageContainer) {
+    imageContainer.addEventListener('click', function() {
+      const blockId = this.id.split('__')[1];
+      const container = document.querySelector('#container__' + blockId);
+      if (container) {
+        container.classList.add('product-image-container--active');
+      }
+    });
+  });
+
+
+
+
+  const selects = document.querySelectorAll('.custom-select');
+  
+
+  selects.forEach(select => {
+    const header = select.querySelector('.select-header');
+    const optionsContainer = select.querySelector('.options-container');
+    const options = optionsContainer.querySelectorAll('.option');
+    const dropdown = header.querySelector('.bi-arrow-right');
+    header.addEventListener('click', function () {
+    const isVisible = optionsContainer.style.display === 'block';
+      optionsContainer.style.display = isVisible ? 'none' : 'block';
+      dropdown.style.transform = isVisible ? 'rotate(0deg)' : 'rotate(180deg)';
+    });
+
+options.forEach((option) => {
+  option.addEventListener('click', function () {
+    // Uncheck all radio inputs
+    options.forEach(opt => {
+      const radioInput = opt.querySelector('input[type="radio"]');
+      if (radioInput) {
+        radioInput.checked = false;
+      }
+    });
+    
+    // Check the clicked radio input
+    const radioInput = this.querySelector('input[type="radio"]');
+    if (radioInput) {
+      radioInput.checked = true;
+    }
+    
+    // Update the header text and hide the options container
+    header.querySelector('span').textContent = this.textContent;
+    optionsContainer.style.display = 'none';  
+  });
+});
+
+    document.addEventListener('click', function (e) {
+      if (!select.contains(e.target)) {
+        optionsContainer.style.display = 'none';
+      }
+    });
+  });
+  document.querySelectorAll('.span-option').forEach(option => {
+    option.addEventListener('click', function() {
+   
+        const radioInput = this.querySelector('input[type="radio"]');
+        const colorValue = radioInput.value;
+        document.querySelectorAll('.span-option input[type="radio"]').forEach(input => {
+            input.checked = false;
+            input.parentElement.style.borderLeftColor = ''; 
+        });
+        radioInput.checked = true;
+        this.style.borderLeftColor= colorValue;  
+      
+    });
+    
+});
+function validateSelections(form) {
+  const sizeSelected = form.querySelector('input[name="sizes"]:checked');
+  const colorSelected = form.querySelector('input[name="color"]:checked');
+  
+  if (!sizeSelected || !colorSelected) {
+    const validation = document.createElement("p");
+      validation.classList.add("validation");
+      validation.textContent = "select color and sizes!";
+      form.appendChild(validation);
+    return false;
+  }
+  
+  return true;
+}
+const addToCartForms = document.querySelectorAll('form[action="/cart/add"]');
+addToCartForms.forEach((form) => {
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    // Validate selections
+    if (!validateSelections(form)) {
+      return; // Stop here if validation fails
+    }
+
+    try {
+      // Attempt to add the initially selected product to the cart
+      const initialProductResponse = await fetch(window.Shopify.routes.root + "cart/add.js", {
+        method: "post",
+        body: new FormData(form),
+      });
+
+      if (!initialProductResponse.ok) {
+        throw new Error('Failed to add initial product to cart');
+      }
+      // After adding the initial product, proceed to add the Soft Winter Jacket
+      const jacketFormData = new FormData();
+      jacketFormData.append('id', '45233964220571');  // Variant ID of the Soft Winter Jacket
+
+      const jacketResponse = await fetch(window.Shopify.routes.root + "cart/add.js", {
+        method: "post",
+        body: jacketFormData,
+      });
+
+      if (!jacketResponse.ok) {
+        throw new Error('Failed to add Soft Winter Jacket to cart');
+      }
+      
+      // Display message
+      const message = document.createElement("p");
+      message.classList.add("added-to-cart");
+      message.textContent = "Added to cart!";
+      form.appendChild(message);
+
+      window.location.href = "/cart";
+
+    } catch (error) {
+      console.error("Error during cart operations:", error);
+      alert("There was an error adding the items to your cart. Please try again.");
+    }
+  });
+});
+
+// Attach event listener to .option elements to trigger checking the radio input and variantChanges on click
+document.querySelectorAll('.option').forEach(option => {
+  option.addEventListener('click', function() {
+    const radio = option.querySelector('input[type="radio"]');
+    if (radio) {
+      radio.checked = true;
+      radio.dispatchEvent(new Event('change'));
+    }
+  });
+});
+
+</script>
+
+
+
+
+
+
+
+
+
+{% schema %}
+{
+"name": "Product Grid",
+"settings": [],
+"blocks": [
+{
+  "type": "product",
+  "name": "Product Block",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product_id",
+      "label": "Select Product"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_images",
+      "label": "Custom Product Images"
+    }
+  ]
+}
+]
+}
+{% endschema %}
