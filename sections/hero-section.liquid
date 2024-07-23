@@ -1,176 +1,185 @@
 <style>
- .c-hamburger {
-  position: relative;
-  overflow: hidden;
-  margin: 10px;
-  padding: 0;
-  width: 30px;
-  height: 36px;
-  z-index: 999;
-  font-size: 0;
-  text-indent: -9999px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background: transparent;
-  box-shadow: none;
-  border-radius: none;
-  border: none;
-  cursor: pointer;
-  -webkit-transition: background 0.3s;
-  transition: background 0.3s;
-  &:focus {
-    outline: none;
-  }
-  span {
-    display: block;
+.c-hamburger {
+position: relative;
+overflow: hidden;
+margin: 10px;
+padding: 0;
+width: 30px;
+height: 36px;
+z-index: 999;
+font-size: 0;
+text-indent: -9999px;
+-webkit-appearance: none;
+-moz-appearance: none;
+appearance: none;
+background: transparent;
+box-shadow: none;
+border-radius: none;
+border: none;
+cursor: pointer;
+-webkit-transition: background 0.3s;
+transition: background 0.3s;
+&:focus {
+  outline: none;
+}
+span {
+  display: block;
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #000;
+  &:before,
+  &:after {
     position: absolute;
-    top: 20px;
+    display: block;
     left: 0;
-    right: 0;
+    width: 100%;
     height: 3px;
-    background: #000;
-    &:before,
-    &:after {
-      position: absolute;
-      display: block;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background-color: #000;
-      content: "";
-    }
-    &:before {
-      top: -10px;
-    }
-    &:after {
-      bottom: -10px;
-    }
+    background-color: #000;
+    content: "";
   }
+  &:before {
+    top: -10px;
+  }
+  &:after {
+    bottom: -10px;
+  }
+}
 }
 
 .c-hamburger--htx {
+span {
+  -webkit-transition: background 0s 0.3s;
+  transition: background 0s 0.3s;
+  &:before,
+  &:after {
+    -webkit-transition-duration: 0.3s, 0.3s;
+    transition-duration: 0.3s, 0.3s;
+    -webkit-transition-delay: 0.3s, 0s;
+    transition-delay: 0.3s, 0s;
+  }
+  &:before {
+    -webkit-transition-property: top, -webkit-transform;
+    transition-property: top, transform;
+  }
+  &:after {
+    -webkit-transition-property: bottom, -webkit-transform;
+    transition-property: bottom, transform;
+  }
+}
+&.is-active {
   span {
-    -webkit-transition: background 0s 0.3s;
-    transition: background 0s 0.3s;
+    background: none;
+
     &:before,
     &:after {
-      -webkit-transition-duration: 0.3s, 0.3s;
-      transition-duration: 0.3s, 0.3s;
-      -webkit-transition-delay: 0.3s, 0s;
-      transition-delay: 0.3s, 0s;
+      -webkit-transition-delay: 0s, 0.3s;
+      transition-delay: 0s, 0.3s;
     }
+
     &:before {
-      -webkit-transition-property: top, -webkit-transform;
-      transition-property: top, transform;
+      top: 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
     }
     &:after {
-      -webkit-transition-property: bottom, -webkit-transform;
-      transition-property: bottom, transform;
-    }
-  }
-  &.is-active {
-    span {
-      background: none;
-
-      &:before,
-      &:after {
-        -webkit-transition-delay: 0s, 0.3s;
-        transition-delay: 0s, 0.3s;
-      }
-
-      &:before {
-        top: 0;
-        -webkit-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-        transform: rotate(45deg);
-      }
-      &:after {
-        bottom: 0;
-        -webkit-transform: rotate(-45deg);
-        -ms-transform: rotate(-45deg);
-        transform: rotate(-45deg);
-      }
+      bottom: 0;
+      -webkit-transform: rotate(-45deg);
+      -ms-transform: rotate(-45deg);
+      transform: rotate(-45deg);
     }
   }
 }
+}
 .shop-now-button:hover .arrow-svg {
-  animation: slide 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+animation: slide 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
 @keyframes slide {
-  0% {
-    transform: translateX(-8px);
-    opacity: 0;
-  }
+0% {
+  transform: translateX(-8px);
+  opacity: 0;
+}
 
-  100% {
-    transform: translateX(8px);
-    opacity: 1;
-  }
+100% {
+  transform: translateX(8px);
+  opacity: 1;
+}
 }
 body:has(.mobileNav){
-    overflow: hidden;
+  overflow: hidden;
 }
 .nav-wrapper {
-  gap: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+gap: 30px;
+display: flex;
+align-items: center;
+justify-content: space-between;
 }
 .logo {
-    flex: 2;
+  flex: 2;
 }
 .logo h1{
-        font-size: 4rem;
-        font-weight: 500;
-    }
+      font-size: 2.5rem;
+      font-weight: 500;
+  }
 .guide h1{
-    font-size: 4rem;
-    font-weight: 500;
+  font-size: 3rem;
+  font-weight: 500;
 
 }
+.hero-image {
+    width: 100%;
+    height: 60vh;
+  
+}
 .nav-wrapper {
-    flex: 4;
+  flex: 4;
 }
 @media screen and (max-width: 990px) {
-    .hamburger {
-    display: block;
+  .hamburger {
+  display: block;
+}
+  .nav-wrapper {
+      opacity: 0;
+      position: absolute;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      transition: top 0.7s ease, opacity 0.7s ease;
+      flex-direction: column;
+      gap: 10px;
   }
-    .nav-wrapper {
-        opacity: 0;
-        position: absolute;
-        top: -100%;
-        left: 0;
-        width: 100%;
-        transition: top 0.7s ease, opacity 0.7s ease;
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .nav-wrapper.mobileNav {
-    opacity: 1;
-    top: 72px;
-    background-color: whitesmoke;
-    padding: 10px 0 20px 0;
-    z-index: 99;
-    }
-    .logo h1{
-        text-align: center;
-        font-size: 4rem;
-    }
-    .guide p{
-        text-align: center;
-    }
+  
+  .nav-wrapper.mobileNav {
+  opacity: 1;
+  top: 72px;
+  background-color: whitesmoke;
+  padding: 20px;
+  z-index: 99;
+  }
+  .logo-heading p {
+    text-align: center;
+  }
+ 
+  .guide p{
+      text-align: center;
+  }
 }
 @media screen and (max-width: 768px) {
-  .logo h1 {
-    font-size: 3rem;
+  .guide h1{
+    text-align: center;
+  }
+.logo h1 {
+  font-size: 2rem;
+  text-align: center;
 }
-    .guide-button{
-        position: absolute;
-        bottom: 20px;
-    }
+  .guide-button{
+      position: absolute;
+      bottom: 20px;
+  }
 }
 </style>
 
