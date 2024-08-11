@@ -9,7 +9,7 @@
   {{ content_for_layout }}
   <script>
     
-    console.log("Product data:", {{ all_products | json }});
+    console.log("Product data:", {{ all_products[product] | json }});
   </script>
   
   {{ 'script.js' |  asset_url |  script_tag }}
